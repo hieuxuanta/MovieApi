@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MovieAPI.Data;
 
 namespace MovieAPI
 {
@@ -27,7 +28,7 @@ namespace MovieAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MovieContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //services.AddControllersWithView();
@@ -47,6 +48,10 @@ namespace MovieAPI
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            MovData.Initialize(app);
+            
+
         }
     }
 }

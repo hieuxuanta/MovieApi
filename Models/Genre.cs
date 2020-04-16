@@ -12,3 +12,4 @@ namespace MovieAPI.Models
         public string GenreID { get; set; }
         public string GenreType { get; set; }
     }
+}
