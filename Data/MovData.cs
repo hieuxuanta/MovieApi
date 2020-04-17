@@ -61,7 +61,6 @@ namespace MovieAPI.Data
             List<Movie> movies = new List<Movie>() {
                 new Movie
                 {
-                    MovID = "M001",
                     MovTitle = "The Wolf of Wall Street",
                     ReleaseYear = "2013",
                     Directors = new List<Director>(db.Directors.Take(1)),
@@ -69,7 +68,7 @@ namespace MovieAPI.Data
                 },
                 new Movie
                 {
-                    MovID = "M002",
+
                     MovTitle = "Paranomal Activity",
                     ReleaseYear = "2006",
                     Directors = new List<Director>(db.Directors.Skip(1).Take(1)),
@@ -77,13 +76,20 @@ namespace MovieAPI.Data
                 },
                 new Movie
                 {
-                    MovID = "M003",
+
                     MovTitle = "We Escape:The Experiment",
                     ReleaseYear = "2020",
                     Directors = new List<Director>(db.Directors.Skip(2).Take(1)),
                     Genres = new List<Genre>(db.Genres.Skip(2).Take(2))
-                },
+                }
             };
+            //Movie movies1 = new Movie();
+
+
+            //movies1.MovID = "M003";
+            //movies1.MovTitle = "We Escape:The Experiment";
+            //movies1.ReleaseYear = "2020";
+
             return movies;
         }
     }

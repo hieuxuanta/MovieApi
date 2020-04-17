@@ -10,7 +10,7 @@ namespace MovieAPI.Models
     public class Movie
     {
         [Key]
-        public string MovID { get; set; }
+        public int MovID { get; set; }
         public string MovTitle { get; set; }
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
         public string ReleaseYear { get; set; }
