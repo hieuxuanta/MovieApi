@@ -25,19 +25,24 @@ namespace MovieAPI.Controllers
         [HttpGet]
         public IEnumerable<Movie> GetMovies()
         {
-            return _context.Movies;
+            return _context.Movies
+                .Include(d => d.Directors)
+                .Include(g => g.Genres);
         }
 
         // GET: api/Movies/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMovie([FromRoute] string id)
+        public async Task<IActionResult> GetMovie([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _context.Movies
+                .Include(d => d.Directors)
+                .Include(g => g.Genres)
+                .FirstOrDefaultAsync(d => d.MovID == id);
 
             if (movie == null)
             {
@@ -49,7 +54,7 @@ namespace MovieAPI.Controllers
 
         // PUT: api/Movies/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMovie([FromRoute] string id, [FromBody] Movie movie)
+        public async Task<IActionResult> PutMovie([FromRoute] int id, [FromBody] Movie movie)
         {
             if (!ModelState.IsValid)
             {
@@ -94,12 +99,12 @@ namespace MovieAPI.Controllers
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMovie", new { id = movie.MovID }, movie);
+            return CreatedAtAction(nameof(GetMovie), new { id = movie.MovID }, movie);
         }
 
         // DELETE: api/Movies/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMovie([FromRoute] string id)
+        public async Task<IActionResult> DeleteMovie([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -118,9 +123,20 @@ namespace MovieAPI.Controllers
             return Ok(movie);
         }
 
-        private bool MovieExists(string id)
+        private bool MovieExists(int id)
         {
             return _context.Movies.Any(e => e.MovID == id);
+        }
+
+        [HttpGet("{id:int}/genre")]
+        public async Task<IActionResult> GetGenres(int id)
+        {
+            var movie = await _context.Movies
+                .Include(g => g.Genres)
+                .FirstOrDefaultAsync(d => d.MovID == id);
+            if (movie == null)
+                return NotFound();
+            return Ok(movie.Genres);
         }
     }
 }
